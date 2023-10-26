@@ -48,6 +48,17 @@ def task4():
     cv2.destroyAllWindows()
 
 def task5():
-    pass
+    img1 = cv2.imread("images/chebupizza.jpg")
+    img2 = cv2.cvtColor(cv2.imread("images/chebupizza.jpg"), cv2.COLOR_BGR2HSV)
 
-task4()
+    cv2.namedWindow("img1", cv2.WINDOW_NORMAL)
+    cv2.namedWindow("img2", cv2.WINDOW_NORMAL)
+
+    cv2.imshow("img1", img1)
+    cv2.imshow("img2", img2)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
+task5()
