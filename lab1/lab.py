@@ -1,3 +1,5 @@
+import math
+
 import cv2
 import numpy as np
 import requests as requests
@@ -142,7 +144,7 @@ def task8():
         central_pixel = image_hsv[center_y, center_x]
 
         hue = central_pixel[0]
-        if (hue > 0) and (hue < 30) or (150 <= hue <= 180):
+        if (hue >= 0) and (hue < 30) or (150 <= hue <= 180):
             line_color = (0, 0, 255)
         elif (30 <= hue < 90):
             line_color = (0, 255, 0)
@@ -151,6 +153,55 @@ def task8():
 
         for rect in [top_rect, bottom_rect, horizontal_rect]:
             cv2.rectangle(image, rect[0], rect[1], line_color, 2)   # -1 to fill rectangles
+
+        res_frame = cv2.addWeighted(frame, 1, image, 0.5, 0)
+
+        cv2.imshow("cross", res_frame)
+
+        if cv2.waitKey(1) & 0xFF == 27:
+            break
+
+    cap.release()   # is optional here
+    cv2.destroyAllWindows()
+
+def task8_infernal():
+    cap = cv2.VideoCapture(0)
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        height, width, _ = frame.shape
+        image = np.ones((height, width, 3), dtype=np.uint8)
+
+        center_x, center_y = width // 2, height // 2
+        radius = 75
+
+        image_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        height, width, _ = image_hsv.shape
+        central_pixel = image_hsv[center_y, center_x]
+
+        hue = central_pixel[0]
+        if (hue >= 0) and (hue < 30) or (150 <= hue <= 180):
+            color = (0, 0, 255)
+        elif (30 <= hue < 90):
+            color = (0, 255, 0)
+        else:
+            color = (255, 0, 0)
+
+        star_points = []
+        for i in range(5):
+            angle = 2 * math.pi * i / 5 - 1 / math.pi
+            x = round(radius * math.cos(angle))
+            y = round(radius * math.sin(angle))
+            print(x)
+            star_points.append((x + center_x, y + center_y))
+
+        cv2.circle(image, [center_x, center_y], 75, color, 2)
+        for idx, point in enumerate(star_points):
+            cv2.line(image, point, star_points[idx - 2], color, 2)
+            cv2.line(image, point, star_points[idx - 3], color, 2)
 
         res_frame = cv2.addWeighted(frame, 1, image, 0.5, 0)
 
@@ -178,4 +229,4 @@ def task9():
     cap.release()   # is optional here
     cv2.destroyAllWindows()
 
-task9()
+task8_infernal()
