@@ -2,8 +2,6 @@ import math
 
 import cv2
 import numpy as np
-import requests as requests
-
 
 def task2():
     img1 = cv2.imread("images/chebupizza.jpg", cv2.IMREAD_UNCHANGED)
@@ -195,7 +193,6 @@ def task8_infernal():
             angle = 2 * math.pi * i / 5 - 1 / math.pi
             x = round(radius * math.cos(angle))
             y = round(radius * math.sin(angle))
-            print(x)
             star_points.append((x + center_x, y + center_y))
 
         cv2.circle(image, [center_x, center_y], 75, color, 2)
@@ -229,4 +226,4 @@ def task9():
     cap.release()   # is optional here
     cv2.destroyAllWindows()
 
-task8_infernal()
+task2()
