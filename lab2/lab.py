@@ -107,7 +107,7 @@ def task5():
                 frame,
                 (cx - (width // 24), cy - (height // 24)),
                 (cx + (width // 24), cy + (height // 24)),
-                (0, 0, 255),
+                (0, 0, 0),
                 2
             )
 
@@ -144,7 +144,7 @@ def task5_red():
                 cropped,
                 (cx - (width // 24), cy - (height // 24)),
                 (cx + (width // 24), cy + (height // 24)),
-                (0, 0, 0),
+                (0, 255, 0),
                 2
             )
 
