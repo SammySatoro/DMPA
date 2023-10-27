@@ -105,8 +105,8 @@ def task5():
 
             cv2.rectangle(
                 frame,
-                (cx - (width // 24), cy - (height // 24)),
-                (cx + (width // 24), cy + (height // 24)),
+                (cx - (width // 32), cy - (height // 32)),
+                (cx + (width // 32), cy + (height // 32)),
                 (0, 0, 0),
                 2
             )
@@ -142,8 +142,8 @@ def task5_red():
 
             cv2.rectangle(
                 cropped,
-                (cx - (width // 24), cy - (height // 24)),
-                (cx + (width // 24), cy + (height // 24)),
+                (cx - (width // 32), cy - (height // 32)),
+                (cx + (width // 32), cy + (height // 32)),
                 (0, 255, 0),
                 2
             )
