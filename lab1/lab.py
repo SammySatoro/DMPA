@@ -18,7 +18,7 @@ def task2():
 
 def task3():
     vid_cap = cv2.VideoCapture("video/polish-cow.mp4", cv2.CAP_ANY)
-    size = (480, 320)
+    size = (480, 640)
 
     while True:
         ret, frame = vid_cap.read()
@@ -43,7 +43,7 @@ def task4():
         ret, vid = vid_cap.read()
         if not ret:
             break
-        cv2.imshow('polish cow', vid)
+        cv2.imshow('recording', vid)
         video_writer.write(vid)
         if cv2.waitKey(1) & 0xFF == 27:
             break
@@ -211,7 +211,7 @@ def task8_infernal():
     cv2.destroyAllWindows()
 
 def task9():
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture("http://192.168.1.67:8080/video")
 
     while True:
         rec, frame = cap.read()
@@ -226,4 +226,4 @@ def task9():
     cap.release()   # is optional here
     cv2.destroyAllWindows()
 
-task2()
+task9()
