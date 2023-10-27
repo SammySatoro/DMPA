@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import requests as requests
 
 
 def task2():
@@ -149,7 +150,7 @@ def task8():
             line_color = (255, 0, 0)
 
         for rect in [top_rect, bottom_rect, horizontal_rect]:
-            cv2.rectangle(image, rect[0], rect[1], line_color, 2) # -1 to fill rectangles
+            cv2.rectangle(image, rect[0], rect[1], line_color, 2)   # -1 to fill rectangles
 
         res_frame = cv2.addWeighted(frame, 1, image, 0.5, 0)
 
@@ -158,8 +159,23 @@ def task8():
         if cv2.waitKey(1) & 0xFF == 27:
             break
 
-    cap.release()
+    cap.release()   # is optional here
     cv2.destroyAllWindows()
 
+def task9():
+    cap = cv2.VideoCapture(0)
 
-task8()
+    while True:
+        rec, frame = cap.read()
+        if not rec:
+            break
+
+        cv2.imshow("camera", frame)
+
+        if cv2.waitKey(1) & 0xFF == 27:
+            break
+
+    cap.release()   # is optional here
+    cv2.destroyAllWindows()
+
+task9()
