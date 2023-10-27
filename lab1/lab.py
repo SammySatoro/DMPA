@@ -75,27 +75,18 @@ def task6():
             break
 
         height, width, _ = frame.shape
-        image = np.ones((height, width, 3), dtype=np.uint8) * 255
-        center_x, center_y = width // 2, height // 2
-        vertical_left_top = [(center_x - 15, center_y - 100), (center_x - 15, center_y - 15)]
-        vertical_right_top = [(center_x + 15, center_y - 100), (center_x + 15, center_y - 15)]
-        vertical_top = [(center_x - 15, center_y - 100), (center_x + 15, center_y - 100)]
-        vertical_left_bot = [(center_x - 15, center_y + 15), (center_x - 15, center_y + 100)]
-        vertical_right_bot = [(center_x + 15, center_y + 15), (center_x + 15, center_y + 100)]
-        vertical_bottom = [(center_x - 15, center_y + 100), (center_x + 15, center_y + 100)]
-        horizontal_left = [(center_x - 80, center_y - 15), (center_x - 80, center_y + 15)]
-        horizontal_right = [(center_x + 80, center_y - 15), (center_x + 80, center_y + 15)]
-        horizontal_top = [(center_x - 80, center_y - 15), (center_x + 80, center_y - 15)]
-        horizontal_bottom = [(center_x - 80, center_y + 15), (center_x + 80, center_y + 15)]
+        image = np.ones((height, width, 3), dtype=np.uint8)
 
-        lines = [vertical_left_top, vertical_right_top, vertical_left_bot, vertical_right_bot, vertical_top,
-            vertical_bottom, horizontal_left, horizontal_right, horizontal_top, horizontal_bottom]
+        center_x, center_y = width // 2, height // 2
+        top_rect = [(center_x - 15, center_y - 15), (center_x + 15, center_y - 100)]
+        bottom_rect = [(center_x - 15, center_y + 15), (center_x + 15, center_y + 100)]
+        horizontal_rect = [(center_x - 80, center_y - 15), (center_x + 80, center_y + 15)]
 
         line_color = (0, 0, 255)
         line_thickness = 2
 
-        for line in lines:
-            cv2.line(image, line[0], line[1], line_color, thickness=line_thickness)
+        for rect in [top_rect,bottom_rect,horizontal_rect]:
+            cv2.rectangle(image, rect[0], rect[1], line_color, line_thickness)
 
         res_frame = cv2.addWeighted(frame, 1, image, 0.5, 0)
 
@@ -129,7 +120,46 @@ def task7():
     video_writer.release()  # is optional here
     cv2.destroyAllWindows()
 
+def task8():
+    cap = cv2.VideoCapture(0)
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        height, width, _ = frame.shape
+        image = np.ones((height, width, 3), dtype=np.uint8)
+
+        center_x, center_y = width // 2, height // 2
+        top_rect = [(center_x - 15, center_y - 15), (center_x + 15, center_y - 100)]
+        bottom_rect = [(center_x - 15, center_y + 15), (center_x + 15, center_y + 100)]
+        horizontal_rect = [(center_x - 80, center_y - 15), (center_x + 80, center_y + 15)]
+
+        image_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        height, width, _ = image_hsv.shape
+        central_pixel = image_hsv[center_y, center_x]
+
+        hue = central_pixel[0]
+        if (hue > 0) and (hue < 30) or (150 <= hue <= 180):
+            line_color = (0, 0, 255)
+        elif (30 <= hue < 90):
+            line_color = (0, 255, 0)
+        else:
+            line_color = (255, 0, 0)
+
+        for rect in [top_rect, bottom_rect, horizontal_rect]:
+            cv2.rectangle(image, rect[0], rect[1], line_color, 2) # -1 to fill rectangles
+
+        res_frame = cv2.addWeighted(frame, 1, image, 0.5, 0)
+
+        cv2.imshow("cross", res_frame)
+
+        if cv2.waitKey(1) & 0xFF == 27:
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
 
 
-
-task7()
+task8()
