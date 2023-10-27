@@ -107,5 +107,29 @@ def task6():
     cap.release()
     cv2.destroyAllWindows()
 
+def task7():
+    cap = cv2.VideoCapture(0)
 
-task6()
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    video_writer = cv2.VideoWriter("video/task7_video.mp4", fourcc, 25, (width, height))
+
+    while True:
+        ret, vid = cap.read()
+        if not ret:
+            break
+        cv2.imshow('webcam video', vid)
+        video_writer.write(vid)
+        if cv2.waitKey(1) & 0xFF == 27:
+            break
+
+    cap.release()  # is optional here
+    video_writer.release()  # is optional here
+    cv2.destroyAllWindows()
+
+
+
+
+task7()
