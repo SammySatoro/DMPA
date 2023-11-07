@@ -1,6 +1,4 @@
 import cv2
-import numpy as np
-
 
 def task1(file, tracker_type, bbox):
     if tracker_type == 'MIL':
