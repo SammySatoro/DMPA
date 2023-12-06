@@ -25,7 +25,7 @@ def task3():
         if not ret:
             exit()
 
-        frame = cv2.resize(frame, (size))
+        frame = cv2.resize(frame, size)
         frame2 = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
         cv2.imshow("polish cow", frame2)
         if cv2.waitKey(1) & 0xFF == 27:
@@ -142,9 +142,9 @@ def task8():
         central_pixel = image_hsv[center_y, center_x]
 
         hue = central_pixel[0]
-        if (hue >= 0) and (hue < 30) or (150 <= hue <= 180):
+        if (hue >= 0) and (hue <= 29) or (150 <= hue <= 180):
             line_color = (0, 0, 255)
-        elif (30 <= hue < 90):
+        elif (30 <= hue <= 90):
             line_color = (0, 255, 0)
         else:
             line_color = (255, 0, 0)
@@ -211,7 +211,7 @@ def task8_infernal():
     cv2.destroyAllWindows()
 
 def task9():
-    cap = cv2.VideoCapture("http://192.168.1.67:8080/video")
+    cap = cv2.VideoCapture("http://192.168.106.135:8080/video")
 
     while True:
         rec, frame = cap.read()
@@ -226,4 +226,4 @@ def task9():
     cap.release()   # is optional here
     cv2.destroyAllWindows()
 
-task9()
+task8_infernal()

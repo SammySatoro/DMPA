@@ -11,12 +11,12 @@ def task1(file, tracker_type, bbox):
         tracker = cv2.TrackerCSRT().create()  # norm-lost
 
     # Read video
-    video = cv2.VideoCapture(r"videos\\" + file)
+    video = cv2.VideoCapture("/home/sammysatoro/PycharmProjects/DMPA/ind1/videos/" + file)
 
     w = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
     h = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    writer = cv2.VideoWriter(r"output\video_" + file + tracker_type + ".mp4", fourcc, 90, (w, h))
+    writer = cv2.VideoWriter("/home/sammysatoro/PycharmProjects/DMPA/ind1/output/video_" + file + tracker_type + ".mp4", fourcc, 90, (w, h))
 
     # Exit if video not opened.
     if not video.isOpened():
@@ -40,6 +40,7 @@ def task1(file, tracker_type, bbox):
         ok, frame = video.read()
         if not ok:
             break
+
 
         # Start timer
         timer = cv2.getTickCount()

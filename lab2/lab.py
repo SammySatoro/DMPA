@@ -23,7 +23,7 @@ def task2():
             break
 
         frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        mask1 = cv2.inRange(frame_hsv, (0, 50, 50), (5, 255, 150))
+        mask1 = cv2.inRange(frame_hsv, (0, 50, 35), (10, 255, 150))
         mask2 = cv2.inRange(frame_hsv, (175, 50, 50), (180, 255, 150))
         mask = cv2.bitwise_or(mask1, mask2)
         cropped = cv2.bitwise_and(frame, frame, mask=mask)  # applies the binary mask to the original frame image
@@ -103,13 +103,45 @@ def task5():
             cy = int(moments['m01'] / area)
             width = height = int(np.sqrt(area))
 
-            cv2.rectangle(
+            # cross
+            # cv2.line(
+            #     frame,
+            #     (cx - (width // 16), cy - (height // 16)),
+            #     (cx + (width // 16), cy + (height // 16)),
+            #     (0, 0, 0),
+            #     2
+            # )
+            # cv2.line(
+            #     frame,
+            #     (cx + (width // 16), cy - (height // 16)),
+            #     (cx - (width // 16), cy + (height // 16)),
+            #     (0, 0, 0),
+            #     2
+            # )
+
+
+            cv2.line(
                 frame,
-                (cx - (width // 32), cy - (height // 32)),
-                (cx + (width // 32), cy + (height // 32)),
+                (cx - (width // 16), cy),
+                (cx + (width // 16), cy),
                 (0, 0, 0),
                 2
             )
+            cv2.line(
+                frame,
+                (cx, cy - (height // 16)),
+                (cx, cy + (height // 16)),
+                (0, 0, 0),
+                2
+            )
+            #
+            # cv2.rectangle(
+            #     frame,
+            #     (cx - (width // 16), cy - (height // 16)),
+            #     (cx + (width // 16), cy + (height // 16)),
+            #     (0, 0, 0),
+            #     2
+            # )
 
         cv2.imshow('rect', frame)
 
@@ -127,7 +159,7 @@ def task5_red():
             break
 
         frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        mask1 = cv2.inRange(frame_hsv, (0, 50, 50), (5, 255, 150))
+        mask1 = cv2.inRange(frame_hsv, (0, 50, 50), (30, 255, 150))
         mask2 = cv2.inRange(frame_hsv, (175, 50, 50), (180, 255, 150))
         mask = cv2.bitwise_or(mask1, mask2)
         cropped = cv2.bitwise_and(frame, frame, mask=mask)
