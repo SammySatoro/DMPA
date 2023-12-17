@@ -11,7 +11,7 @@ def task(path, standard_deviation, kernel_size, bound_path):
     # 2
     matrix_gradient, img_angles, max_gradient = apply_sobel_operators(img)
     # 3
-    img_border_no_filter = find_local_maxima(img, img_angles, matrix_gradient)
+    img_border_no_filter = apply_non_max_suppression(img, img_angles, matrix_gradient)
     # 4
     apply_gradient_filter(img, matrix_gradient, img_border_no_filter, max_gradient, bound_path)
 
@@ -68,36 +68,33 @@ def get_number_of_angles(x, y):
     return angle_lookup[(quadrant, int(abs(tg) > 2.414 or abs(tg) < 0.414))]
 
 def apply_sobel_operators(img):
-    # Sobel kernels
+    # ядра соболя
     kernel_x = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
     kernel_y = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
 
-    # Convolve the image with Sobel kernels
     img_x = convolve(img, kernel_x)
     img_y = convolve(img, kernel_y)
 
-    # Compute the gradient magnitude
+    # вычисление величины градиента
     matrix_gradient = np.sqrt(img_x ** 2 + img_y ** 2)
 
-    # Compute the gradient angles
+    # вычисление углы уклона
     img_angles = np.arctan2(img_y, img_x)
     img_angles = np.degrees(img_angles)
 
-    # Normalize and scale the gradient values
+    # нормализация и масштабирование значений градиента
     max_gradient = np.max(matrix_gradient)
     img_gradient_to_print = (matrix_gradient / max_gradient) * 255
 
-    # Scale and map the angles to the range [0, 255]
     img_angles_to_print = (img_angles / 360) * 255
 
-    # Display the images
-    cv2.imshow('img gradient to print', img_gradient_to_print.astype(np.uint8))
-    cv2.imshow('img angles to print', img_angles_to_print.astype(np.uint8))
+    cv2.imshow('Gradient Magnitude', img_gradient_to_print.astype(np.uint8))
+    cv2.imshow('Gradient Angle', img_angles_to_print.astype(np.uint8))
 
     return matrix_gradient, img_angles, max_gradient
 
 
-def find_local_maxima(img, img_angles, matrix_gradient):
+def apply_non_max_suppression(img, img_angles, matrix_gradient):
     img_border_no_filter = img.copy()
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
@@ -126,12 +123,12 @@ def find_local_maxima(img, img_angles, matrix_gradient):
                     j - x_shift]
                 img_border_no_filter[i][j] = 255 if is_max else 0
 
-    cv2.imshow('img border no filter ', img)
+    cv2.imshow('Non-Maximal Suppression', img)
     return img_border_no_filter
 
 
 def apply_gradient_filter(img, matr_gradient, img_border_no_filter, max_gradient, bound_path):
-    # Calculate bounds
+    # вычисление границ
     lower_bound = max_gradient / bound_path
     upper_bound = max_gradient - max_gradient / bound_path
     img_border_filter = np.zeros(img.shape, dtype=np.uint8)
@@ -149,7 +146,7 @@ def apply_gradient_filter(img, matr_gradient, img_border_no_filter, max_gradient
                 elif gradient > upper_bound:
                     img_border_filter[i][j] = 255
 
-    cv2.imshow('img border filter ', img_border_filter)
+    cv2.imshow('Double Thresholding', img_border_filter)
     return img_border_filter
 
 
