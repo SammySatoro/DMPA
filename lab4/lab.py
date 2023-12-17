@@ -42,30 +42,6 @@ def convolve(img, kernel):
     return matrix
 
 
-def get_number_of_angles(x, y):
-    tg = y / x if x != 0 else 127
-
-    if x < 0:
-        quadrant = 0 if y < 0 else 1
-    else:
-        quadrant = 2 if y < 0 else 3
-
-    angle_lookup = {
-        (0, 0): 127,
-        (0, 1): 2,
-        (0, 2): 3,
-        (1, 0): 6,
-        (1, 1): 7,
-        (1, 2): 4,
-        (2, 0): 1,
-        (2, 1): 0,
-        (2, 2): 5,
-        (3, 0): 2,
-        (3, 1): 3,
-        (3, 2): 4,
-    }
-
-    return angle_lookup[(quadrant, int(abs(tg) > 2.414 or abs(tg) < 0.414))]
 
 def apply_sobel_operators(img):
     # ядра соболя
@@ -79,7 +55,10 @@ def apply_sobel_operators(img):
     matrix_gradient = np.sqrt(img_x ** 2 + img_y ** 2)
 
     # вычисление углы уклона
-    img_angles = np.arctan2(img_y, img_x)
+    # Функция возвращает массив углов в радианах, где каждый угол - это арктангенс соответствующей пары элементов из y и x.
+    # Углы находятся в диапазоне [-pi, pi] и измеряются против часовой стрелки от положительной оси x.
+    img_angles =  np.arctan2(img_y, img_x)
+    # Функция преобразует радианы в градусы
     img_angles = np.degrees(img_angles)
 
     # нормализация и масштабирование значений градиента
