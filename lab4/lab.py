@@ -89,24 +89,21 @@ def apply_non_max_suppression(img, img_angles, matrix_gradient):
                     x_shift = 1
                 else:
                     x_shift = -1
-
                 if angle % 4 == 2:
                     y_shift = 0
                 elif 2 < angle < 6:
                     y_shift = -1
                 else:
                     y_shift = 1
-
                 # является ли текущий пиксель локальным максимумом градиента в направлении угла
-                is_max = gradient >= matrix_gradient[i + y_shift][j + x_shift] and gradient >= matrix_gradient[i - y_shift][
-                    j - x_shift]
+                is_max = gradient >= matrix_gradient[i + y_shift][j + x_shift] and \
+                         gradient >= matrix_gradient[i - y_shift][j - x_shift]
                 img_border_no_filter[i][j] = 255 if is_max else 0
-
-    cv2.imshow('Non-Maximal Suppression', img)
+    cv2.imshow('Non-Maximal Suppression', img_border_no_filter)
     return img_border_no_filter
 
 
-def apply_gradient_filter(img, matr_gradient, img_border_no_filter, max_gradient, bound_path):
+def apply_gradient_filter(img, matrix_gradient, img_border_no_filter, max_gradient, bound_path):
     # вычисление границ
     lower_bound = max_gradient / bound_path
     upper_bound = max_gradient - max_gradient / bound_path
@@ -114,12 +111,12 @@ def apply_gradient_filter(img, matr_gradient, img_border_no_filter, max_gradient
 
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
-            gradient = matr_gradient[i][j]
+            gradient = matrix_gradient[i][j]
 
             if img_border_no_filter[i][j] == 255:
                 if lower_bound <= gradient <= upper_bound:
                     # проверка соседних пикселей на наличие более высокого градиента
-                    if any(img_border_no_filter[i + k][j + l] == 255 and matr_gradient[i + k][j + l] >= lower_bound for
+                    if any(img_border_no_filter[i + k][j + l] == 255 and matrix_gradient[i + k][j + l] >= lower_bound for
                            k in range(-1, 2) for l in range(-1, 2)):
                         img_border_filter[i][j] = 255
                 elif gradient > upper_bound:
@@ -130,6 +127,4 @@ def apply_gradient_filter(img, matr_gradient, img_border_no_filter, max_gradient
 
 
 # 5
-#task('test.jpg', 10, 3, 15)
-task('D:\PythonProjects\DMPA\lab4\images\chebupizza.png', 100, 5, 6)
-#task('test.jpg', 100, 11, 15)
+task('D:\PythonProjects\DMPA\lab4\images\chebupizza.png', 15, 21, 15)
