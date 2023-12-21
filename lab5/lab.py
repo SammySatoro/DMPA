@@ -26,10 +26,10 @@ def task(kernel_size, standard_deviation, delta_thresh, min_area):
 
         thresh = cv2.threshold(diff, delta_thresh, 255, cv2.THRESH_BINARY)[1]
 
-        (contors, hierarchy) = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        (contours, hierarchy) = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-        for contr in contors:
-            area = cv2.contourArea(contr)
+        for contour in contours:
+            area = cv2.contourArea(contour)
             if area < min_area:
                 continue
             video_writer.write(frame)
